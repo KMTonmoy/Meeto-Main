@@ -13,7 +13,7 @@ export default clerkMiddleware((auth, req) => {
   if (protectedRoute(req)) auth().protect();
 });
 
-export const config = {
+export const config = { 
   matcher: [
     '/', 
     '/upcoming', 
