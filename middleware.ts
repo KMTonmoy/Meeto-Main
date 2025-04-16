@@ -1,5 +1,8 @@
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 
+export const runtime = 'edge'; // Required for Clerk middleware on edge
+
+// Define all the routes you want to protect
 const protectedRoute = createRouteMatcher([
   '/',
   '/upcoming',
@@ -9,11 +12,21 @@ const protectedRoute = createRouteMatcher([
   '/personal-room',
 ]);
 
+// Main middleware handler
 export default clerkMiddleware((auth, req) => {
-  if (protectedRoute(req)) auth().protect();
+  if (protectedRoute(req)) {
+    auth().protect(); // Require authentication
+  }
 });
 
+// Match only the necessary routes — avoid over-matching everything!
 export const config = {
-  matcher: ['/((?!.+\\.[\\w]+$|_next).*)', '/', '/(api|trpc)(.*)'],
+  matcher: [
+    '/',
+    '/upcoming',
+    '/meeting/:path*',
+    '/previous',
+    '/recordings',
+    '/personal-room',
+  ],
 };
-
