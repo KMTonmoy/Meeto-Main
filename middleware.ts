@@ -10,16 +10,11 @@ const protectedRoute = createRouteMatcher([
 ]);
 
 export default clerkMiddleware((auth, req) => {
-  if (protectedRoute(req)) auth().protect();
+  if (protectedRoute(req)) {
+    auth().protect();
+  }
 });
 
-export const config = { 
-  matcher: [
-    '/', 
-    '/upcoming', 
-    '/meeting/:path*', 
-    '/previous', 
-    '/recordings', 
-    '/personal-room',
-  ],
+export const config = {
+  matcher: ['/((?!.+\\.[\\w]+$|_next|favicon.ico).*)', '/', '/(api|trpc)(.*)'],
 };
